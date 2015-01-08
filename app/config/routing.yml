@@ -1,0 +1,3 @@
+mxt_core:
+    resource: "@MXTCoreBundle/Resources/config/routing.yml"
+    prefix:   /
