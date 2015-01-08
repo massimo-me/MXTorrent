@@ -1,3 +1,0 @@
-mxt_core_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: MXTCoreBundle:Default:index }

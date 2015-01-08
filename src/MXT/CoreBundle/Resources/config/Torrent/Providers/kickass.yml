@@ -1,0 +1,16 @@
+parameters:
+    kickass.api:
+      url: https://kickass.so/json.php
+      filters:
+        - q #(Key)
+        - field #(Order)
+        - page #(Page)
+    kickass.timeout:
+      response: 5
+      connection: 5
+    kickass.search.fields:
+      size: size
+      files : files_count
+      age   : time_add
+      seed  : seeders
+      leech : leecher
