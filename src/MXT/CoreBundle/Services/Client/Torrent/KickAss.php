@@ -23,4 +23,31 @@ class KickAss
         $this->client = $client;
     }
 
+    /**
+     * @param array $filters
+     * @return \GuzzleHttp\Message\ResponseInterface|null
+     */
+    public function request(array $filters)
+    {
+        $kickAssApi = $this->container->getParameter('kickass.api');
+        $kickAssTimeOut = $this->container->getParameter('kickass.timeout');
+
+        $response = null;
+
+        try {
+            $response = $this->client->get(
+                sprintf('%s?%s', $kickAssApi['url'], http_build_query(
+                    array_combine($filters, $kickAssApi['filters'])
+                )),
+                [
+                    'connect_timeout' => $kickAssTimeOut['connection'],
+                    'timeout'         => $kickAssTimeOut['response']
+                ]
+            );
+        } catch(\Exception $e) {
+            return null;
+        }
+
+        return $response;
+    }
 }

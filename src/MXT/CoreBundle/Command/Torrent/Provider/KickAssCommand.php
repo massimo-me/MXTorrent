@@ -43,5 +43,8 @@ class KickAssCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->getContainer()->get('mxt_core.torrent.client.kickass')->request(
+            ['test', 'age', '0']
+        );
     }
 }
