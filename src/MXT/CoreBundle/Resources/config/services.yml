@@ -1,1 +1,12 @@
+parameters:
+    mxt_core.torrent.client.kickass.class: MXT\CoreBundle\Services\Client\Torrent\KickAss
+    mxt_core.httpclient.class: MXT\CoreBundle\Services\MXTClient
+
 services:
+    mxt_core.httpclient:
+       class: %mxt_core.httpclient.class%
+    mxt_core.torrent.client.kickass:
+        class: %mxt_core.torrent.client.kickass.class%
+        arguments:
+              container: @service_container
+              client: @mxt_core.httpclient
