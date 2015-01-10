@@ -7,50 +7,50 @@
  *
  */
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as Mongo;
 
 /**
- * @MongoDB\Document
+ * @Mongo\Document
  */
 class Torrent
 {
     /**
-     * @MongoDB\Id
+     * @Mongo\Id
      */
     private $id;
 
     /**
-     * @MongoDB\String
+     * @Mongo\String
      */
     private $title;
 
     /**
-     * @MongoDB\Date
+     * @Mongo\Date
      */
     private $date;
 
     /**
-     * @MongoDB\String
+     * @Mongo\String
      */
     private $torrentLink;
 
     /**
-     * @MongoDB\Int
+     * @Mongo\Int
      */
     private $files;
 
     /**
-     * @MongoDB\String
+     * @Mongo\String
      */
     private $hash;
 
     /**
-     * @MongoDB\String
+     * @Mongo\String
      */
     private $size;
 
     /**
-     * @MongoDB\Boolean
+     * @Mongo\Boolean
      */
     private $verified;
 
