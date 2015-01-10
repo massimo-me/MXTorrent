@@ -43,14 +43,14 @@ class KickAss
                     'timeout'         => $kickAssTimeOut['response']
                 ]
             );
+
+            if (!array_key_exists('list', $response->json())) {
+                return null;
+            }
+
+            return $response->json()['list'];
         } catch(\Exception $e) {
             return null;
         }
-
-        if (!array_key_exists('list', $response->json())) {
-            return null;
-        }
-
-        return $response->json()['list'];
     }
 }
