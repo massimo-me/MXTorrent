@@ -1,10 +1,17 @@
 parameters:
-    mxt_core.torrent.client.kickass.class: MXT\CoreBundle\Services\Client\Torrent\KickAss
+    mxt_core.torrent.folder: "%kernel.root_dir%/datas/Torrent"
     mxt_core.httpclient.class: MXT\CoreBundle\Services\MXTClient
+    mxt_core.download.torcache.class: MXT\CoreBundle\Services\Download\TorCache
+    mxt_core.torrent.client.kickass.class: MXT\CoreBundle\Services\Client\Torrent\KickAss
 
 services:
     mxt_core.httpclient:
        class: %mxt_core.httpclient.class%
+    mxt_core.download.torcache:
+      class: %mxt_core.download.torcache.class%
+      arguments:
+        client: @mxt_core.httpclient
+        folder: %mxt_core.torrent.folder%
     mxt_core.torrent.client.kickass:
         class: %mxt_core.torrent.client.kickass.class%
         arguments:
