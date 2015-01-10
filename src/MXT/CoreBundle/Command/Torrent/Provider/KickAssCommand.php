@@ -43,5 +43,6 @@ class KickAssCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
     }
 }

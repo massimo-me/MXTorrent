@@ -3,7 +3,7 @@
 * MXTorrent
 * © Chiarillo Massimo
 *
-* MXT\CoreBundle\Services\Client\Torrent\KickAss.php
+* MXT\CoreBundle\Tests\Services\Client\Torrent\KickAssTest.php
 *
 */
 
