@@ -25,7 +25,7 @@ class KickAss
 
     /**
      * @param array $filters
-     * @return \GuzzleHttp\Message\ResponseInterface|null
+     * @return array|null
      */
     public function request(array $filters)
     {
@@ -33,11 +33,10 @@ class KickAss
         $kickAssTimeOut = $this->container->getParameter('kickass.timeout');
 
         $response = null;
-
         try {
             $response = $this->client->get(
                 sprintf('%s?%s', $kickAssApi['url'], http_build_query(
-                    array_combine($filters, $kickAssApi['filters'])
+                    array_combine($kickAssApi['filters'], $filters)
                 )),
                 [
                     'connect_timeout' => $kickAssTimeOut['connection'],
@@ -48,6 +47,10 @@ class KickAss
             return null;
         }
 
-        return $response;
+        if (!array_key_exists('list', $response->json())) {
+            return null;
+        }
+
+        return $response->json()['list'];
     }
 }
