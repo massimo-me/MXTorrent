@@ -6,6 +6,7 @@
  * MXT\CoreBundle\Document\Torrent.php
  *
  */
+namespace MXT\CoreBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 

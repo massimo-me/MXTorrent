@@ -9,6 +9,7 @@
 
 namespace MXT\CoreBundle\Command\Torrent\Provider;
 
+use MXT\CoreBundle\Document\Torrent;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,6 +37,12 @@ class KickAssCommand extends ContainerAwareCommand
                 'p',
                 InputOption::VALUE_OPTIONAL,
                 0
+            )
+            ->addOption(
+                'mongoStore',
+                'm',
+                InputOption::VALUE_NONE,
+                'Save result'
             )
             ->addOption(
                 'download',
@@ -72,6 +79,10 @@ class KickAssCommand extends ContainerAwareCommand
             if ($input->getOption('download')) {
                 $this->downloadResult($torrent);
             }
+
+            if ($input->getOption('mongoStore')) {
+                $this->saveResult($torrent);
+            }
         }
     }
 
@@ -103,10 +114,37 @@ class KickAssCommand extends ContainerAwareCommand
         $output->writeln("\n");
     }
 
-    private function downloadResult(array $torrent) {
+    private function downloadResult(array $torrent)
+    {
         $this->getContainer()->get('mxt_core.download.torCache')->download(
             $torrent['torrentLink'],
             $torrent['title']
         );
+    }
+
+    private function saveResult(array $torrent)
+    {
+        $dm = $this->getContainer()->get('doctrine_mongodb')->getManager();
+
+        $checkTorrent = $dm->getRepository('MXTCoreBundle:Torrent')->findOneBy([
+            'hash' => $torrent['hash']
+        ]);
+
+        if ($checkTorrent) {
+            return ;
+        }
+
+        $torrentDocument = new Torrent();
+
+        $torrentDocument->setTitle($torrent['title']);
+        $torrentDocument->setDate(new \DateTime($torrent['pubDate']));
+        $torrentDocument->setFiles($torrent['files']);
+        $torrentDocument->setHash($torrent['hash']);
+        $torrentDocument->setSize($torrent['size']);
+        $torrentDocument->setTorrentLink($torrent['torrentLink']);
+        $torrentDocument->setVerified($torrent['verified']);
+
+        $dm->persist($torrentDocument);
+        $dm->flush();
     }
 }
