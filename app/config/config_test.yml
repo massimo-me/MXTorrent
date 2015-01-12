@@ -1,6 +1,11 @@
 imports:
     - { resource: config_dev.yml }
 
+parameters:
+    mxt_core.torrent.client.kickAss.class: MXT\CoreBundle\Test\Services\Client\Torrent\KickAss
+
+liip_functional_test: ~
+
 framework:
     test: ~
     session:
@@ -14,3 +19,6 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+doctrine_mongodb:
+    default_database: %mongodb_database%_test
