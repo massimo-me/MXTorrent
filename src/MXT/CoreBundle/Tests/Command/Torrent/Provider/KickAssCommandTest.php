@@ -28,12 +28,20 @@ class KickAssCommandTest extends MXTWebTestCase
 
         $command = $this->application->find('mxt:torrent:kickass');
         $commandTester = new CommandTester($command);
-        $commandTester->execute([
-            'command' => $command->getName(),
-            'searchQuery' => 'test',
-            'order' => 'age'
-        ]);
 
+        $commandOptions = [
+            'command'     => $command->getName(),
+            'searchQuery' => 'test',
+            'order'       => 'age',
+            '-m'          => true
+        ];
+        $commandTester->execute($commandOptions);
         $this->assertContains('Title: The Trip to Italy', $commandTester->getDisplay());
+
+        $dm = $this->getContainer()->get('doctrine_mongodb')->getManager();
+        $this->assertCount(25, $dm->getRepository('MXTCoreBundle:Torrent')->findAll());
+
+        $commandTester->execute($commandOptions);
+        $this->assertCount(25, $dm->getRepository('MXTCoreBundle:Torrent')->findAll());
     }
 }
