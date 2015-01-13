@@ -6,7 +6,6 @@
  * MXT\CoreBundle\Command\Torrent\Provide\KickAssCommand
  *
  */
-
 namespace MXT\CoreBundle\Command\Torrent\Provider;
 
 use MXT\CoreBundle\Document\Torrent;
