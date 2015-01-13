@@ -1,1 +1,10 @@
+parameters:
+  mxt_transmission.transmission.class: MXT\TransmissionBundle\Services\MXTTransmission
+  mxt_transmission.client.class: MXT\TransmissionBunle\Services\Client\MXTTransmissionClient
+
 services:
+  mxt_transmission.transmission:
+    class: %mxt_transmission.transmission.class%
+    arguments:
+      host: %transmission_host%
+      port: %transmission_port%

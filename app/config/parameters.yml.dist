@@ -3,6 +3,9 @@ parameters:
     mongodb_host: mongodb://localhost:27017
     mongodb_database: mxtorrent
 
+    transmission_host: 127.0.0.1
+    transmission_port: 9091
+
     mailer_transport:  smtp
     mailer_host:       127.0.0.1
     mailer_user:       ~

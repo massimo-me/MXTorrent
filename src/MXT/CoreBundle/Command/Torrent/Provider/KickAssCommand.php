@@ -48,11 +48,19 @@ class KickAssCommand extends ContainerAwareCommand
                 'd',
                 InputOption::VALUE_NONE,
                 'Download .torrent'
+            )
+            ->addOption(
+                'transmissionInteract',
+                't',
+                InputOption::VALUE_NONE,
+                'Upload .torrent on Transmission Server'
             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        //var_dump($this->getContainer()->get('mxt_transmission.transmission')->all());die;
+
         $searchQuery = $input->getArgument('searchQuery');
         $order = $input->getArgument('order');
         $page = $input->getOption('page');
@@ -81,6 +89,19 @@ class KickAssCommand extends ContainerAwareCommand
 
             if ($input->getOption('mongoStore')) {
                 $this->saveResult($torrent);
+            }
+
+            if ($input->getOption('transmissionInteract')) {
+                $dialog = $this->getHelper('dialog');
+                #@WIP
+                $dialog->askAndValidate(
+                    $output,
+                    '<comment>Add on Transmission Server?</comment>',
+                    function ($response) {
+                        return preg_match('/^(?:No)/i', $response);
+                    },
+                    false
+                );
             }
         }
     }
