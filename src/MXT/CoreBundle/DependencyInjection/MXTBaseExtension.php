@@ -19,10 +19,12 @@ class MXTBaseExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $this->addConfiguration($configs);
+    }
+
+    private function addConfiguration(array $configs)
+    {
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);
-
-        $this->loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $this->loader->load('services.yml');
     }
 }

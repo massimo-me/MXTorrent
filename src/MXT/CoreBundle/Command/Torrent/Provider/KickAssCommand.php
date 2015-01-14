@@ -59,19 +59,15 @@ class KickAssCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        //var_dump($this->getContainer()->get('mxt_transmission.transmission')->all());die;
-
         $searchQuery = $input->getArgument('searchQuery');
         $order = $input->getArgument('order');
         $page = $input->getOption('page');
-
-        $this->checkOrder($order);
 
         $kickAssClient = $this->getContainer()->get('mxt_core.torrent.client.kickAss');
 
         $torrentList = $kickAssClient->request([
             $searchQuery,
-            $order,
+            $this->getOrderValue($order),
             $page
         ]);
 
@@ -92,16 +88,7 @@ class KickAssCommand extends ContainerAwareCommand
             }
 
             if ($input->getOption('transmissionInteract')) {
-                $dialog = $this->getHelper('dialog');
-                #@WIP
-                $dialog->askAndValidate(
-                    $output,
-                    '<comment>Add on Transmission Server?</comment>',
-                    function ($response) {
-                        return preg_match('/^(?:No)/i', $response);
-                    },
-                    false
-                );
+               $this->uploadTorrent($output, $torrent);
             }
         }
     }
@@ -110,7 +97,7 @@ class KickAssCommand extends ContainerAwareCommand
      * @param $order
      * @throws \Exception
      */
-    private function checkOrder($order)
+    private function getOrderValue($order)
     {
         $configOrder = $this->getContainer()->getParameter('kickAss.search.fields');
         if (!array_key_exists($order, $configOrder)) {
@@ -120,6 +107,8 @@ class KickAssCommand extends ContainerAwareCommand
                 implode(',', array_keys($configOrder))
             ));
         }
+
+        return $configOrder[$order];
     }
 
     private function printResult(OutputInterface $output, array $torrent)
@@ -131,12 +120,12 @@ class KickAssCommand extends ContainerAwareCommand
 
         $mbSize = round($torrent['size'] / 1024 / 1024, 2);
         $output->writeln(sprintf('Size: <info>%s MB</info>', $mbSize));
-        $output->writeln("\n");
+        $output->writeln('');
     }
 
     private function downloadResult(array $torrent)
     {
-        $this->getContainer()->get('mxt_core.download.torCache')->download(
+        return $this->getContainer()->get('mxt_core.download.torCache')->download(
             $torrent['torrentLink'],
             $torrent['title']
         );
@@ -166,5 +155,43 @@ class KickAssCommand extends ContainerAwareCommand
 
         $dm->persist($torrentDocument);
         $dm->flush();
+    }
+
+    private function uploadTorrent(OutputInterface $output, array $torrent)
+    {
+        $dialog = $this->getHelper('dialog');
+
+        $result = $dialog->askAndValidate(
+            $output,
+            '<comment>[enter] or write "yes" to insert this .torrent on Transmission: </comment>',
+            function ($response) {
+                if (empty($response)) return true;
+
+                return (bool) preg_match('/^(?:yes)/i', $response);
+            }
+        );
+
+        if (!$result) {
+            $output->writeln(sprintf('Torrent <question>%s</question> not uploaded on Transmission Server', $torrent['title']));
+            $output->writeln('');
+            return ;
+        }
+
+        $torrentFile = $this->downloadResult($torrent)->getPath();
+
+        try {
+            $this->getContainer()->get('mxt_transmission.transmission')->add(
+                base64_encode(
+                    file_get_contents($torrentFile)
+                ),
+                true
+            );
+
+            $output->writeln(sprintf('Torrent <info>%s</info> was uploaded', $torrent['title']));
+        } catch (\Exception $e) {
+            $output->writeln(sprintf('Transmission error: <error>%s</error>', $e->getMessage()));
+        }
+
+        $output->writeln('');
     }
 }

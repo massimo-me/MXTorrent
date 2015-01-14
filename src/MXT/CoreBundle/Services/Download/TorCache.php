@@ -23,18 +23,41 @@ class TorCache
      */
     private $folder;
 
+    /**
+     * @var String
+     */
+    private $path = null;
+
     public function __construct(MXTClient $client, $folder)
     {
         $this->client = $client;
+
+        if (!is_dir($folder)) {
+            throw new \Exception(sprintf('Invalid folder (%s)', $folder));
+        }
+
         $this->folder = $folder;
     }
 
     public function download($torrentLink, $fileName)
     {
-        $this->client->get(
-            $torrentLink,
-            [
-                'save_to' => sprintf('%s/%s.torrent', $this->folder, $fileName),
-            ]);
+        try {
+            $this->path = sprintf('%s/%s.torrent', $this->folder, $fileName);
+
+            $this->client->get(
+                $torrentLink,
+                [
+                    'save_to' => $this->path
+                ]);
+
+            return $this;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    public function getPath()
+    {
+        return $this->path;
     }
 }

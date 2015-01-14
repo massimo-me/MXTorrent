@@ -12,5 +12,10 @@ class MXTTransmissionExtension extends MXTCoreExtension
     public function load(array $configs, ContainerBuilder $container)
     {
         parent::load($configs, $container);
+
+        $this->loader = new Loader\YamlFileLoader($container, new FileLocator(
+            sprintf('%s/../Resources/config', (__DIR__))
+        ));
+        $this->loader->load('services.yml');
     }
 }
