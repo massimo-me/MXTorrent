@@ -159,17 +159,7 @@ class KickAssCommand extends ContainerAwareCommand
 
     private function uploadTorrent(OutputInterface $output, array $torrent)
     {
-        $dialog = $this->getHelper('dialog');
-
-        $result = $dialog->askAndValidate(
-            $output,
-            '<comment>[enter] or write "yes" to insert this .torrent on Transmission: </comment>',
-            function ($response) {
-                if (empty($response)) return true;
-
-                return (bool) preg_match('/^(?:yes)/i', $response);
-            }
-        );
+        $result = $this->askToUploadTorrent($output);
 
         if (!$result) {
             $output->writeln(sprintf('Torrent <question>%s</question> not uploaded on Transmission Server', $torrent['title']));
@@ -180,18 +170,37 @@ class KickAssCommand extends ContainerAwareCommand
         $torrentFile = $this->downloadResult($torrent)->getPath();
 
         try {
-            $this->getContainer()->get('mxt_transmission.transmission')->add(
-                base64_encode(
-                    file_get_contents($torrentFile)
-                ),
-                true
-            );
-
+            $this->transmissionUpload($torrentFile);
             $output->writeln(sprintf('Torrent <info>%s</info> was uploaded', $torrent['title']));
         } catch (\Exception $e) {
             $output->writeln(sprintf('Transmission error: <error>%s</error>', $e->getMessage()));
         }
 
         $output->writeln('');
+    }
+
+    private function transmissionUpload($torrentFile)
+    {
+        $this->getContainer()->get('mxt_transmission.transmission')->add(
+            base64_encode(
+                file_get_contents($torrentFile)
+            ),
+            true
+        );
+    }
+
+    private function askToUploadTorrent(OutputInterface $output)
+    {
+        $dialog = $this->getHelper('dialog');
+
+        return $dialog->askAndValidate(
+            $output,
+            '<comment>[enter] or write "yes" to insert this .torrent on Transmission: </comment>',
+            function ($response) {
+                if (empty($response)) return true;
+
+                return (bool) preg_match('/^(?:yes)/i', $response);
+            }
+        );
     }
 }

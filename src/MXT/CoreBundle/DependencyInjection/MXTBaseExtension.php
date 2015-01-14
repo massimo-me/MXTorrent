@@ -27,4 +27,11 @@ class MXTBaseExtension extends Extension
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);
     }
+
+    protected function loadConfiguration(ContainerBuilder $container, $currentDirectory)
+    {
+        $this->loader = new Loader\YamlFileLoader($container, new FileLocator(
+            sprintf('%s/../Resources/config', $currentDirectory)
+        ));
+    }
 }

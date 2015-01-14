@@ -29,20 +29,9 @@ class KickAss
      */
     public function request(array $filters)
     {
-        $kickAssApi = $this->container->getParameter('kickass.api');
-        $kickAssTimeOut = $this->container->getParameter('kickass.timeout');
-
         $response = null;
         try {
-            $response = $this->client->get(
-                sprintf('%s?%s', $kickAssApi['url'], http_build_query(
-                    array_combine($kickAssApi['filters'], $filters)
-                )),
-                [
-                    'connect_timeout' => $kickAssTimeOut['connection'],
-                    'timeout'         => $kickAssTimeOut['response']
-                ]
-            );
+            $response = $this->createRequest($filters);
 
             if (!array_key_exists('list', $response->json())) {
                 return null;
@@ -52,5 +41,26 @@ class KickAss
         } catch(\Exception $e) {
             return null;
         }
+    }
+
+    private function createRequest(array $filters)
+    {
+        $kickAssApi = $this->container->getParameter('kickass.api');
+        $kickAssTimeOut = $this->container->getParameter('kickass.timeout');
+
+        return $this->client->get(
+            $this->generateUrl($kickAssApi, $filters),
+            [
+                'connect_timeout' => $kickAssTimeOut['connection'],
+                'timeout'         => $kickAssTimeOut['response']
+            ]
+        );
+    }
+
+    private function generateUrl(array $kickAssApi, array $filters)
+    {
+        return sprintf('%s?%s', $kickAssApi['url'], http_build_query(
+            array_combine($kickAssApi['filters'], $filters)
+        ));
     }
 }
