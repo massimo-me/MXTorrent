@@ -5,6 +5,8 @@ parameters:
 
     transmission_host: 127.0.0.1
     transmission_port: 9091
+    remote_servers:
+        - http://torrent.massimo.me/
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1
