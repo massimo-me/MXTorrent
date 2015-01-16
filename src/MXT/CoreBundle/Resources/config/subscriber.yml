@@ -1,0 +1,6 @@
+services:
+    mxt_core.subscriber.torrent_subscriber:
+        class: MXT\CoreBundle\Subscriber\TorrentSubscriber
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_subscriber }

@@ -3,12 +3,11 @@
  * MXTorrent
  * © Chiarillo Massimo
  *
- * MXT\CoreBundle\Command\Torrent\Provide\KickAssCommand
+ * MXT\CoreBundle\Command\Torrent\RemoteUploadCommand
  *
  */
-namespace MXT\CoreBundle\Command\Torrent\Provider;
+namespace MXT\CoreBundle\Command\Torrent;
 
-use MXT\CoreBundle\Document\Torrent;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,6 +24,6 @@ class RemoteUploadCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        #@WIP
+
     }
 }

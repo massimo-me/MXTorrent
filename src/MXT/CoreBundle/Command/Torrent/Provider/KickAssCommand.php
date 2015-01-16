@@ -9,6 +9,8 @@
 namespace MXT\CoreBundle\Command\Torrent\Provider;
 
 use MXT\CoreBundle\Document\Torrent;
+use MXT\CoreBundle\Event\FilterTorrentEvent;
+use MXT\CoreBundle\CoreEvents;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -153,8 +155,8 @@ class KickAssCommand extends ContainerAwareCommand
         $torrentDocument->setTorrentLink($torrent['torrentLink']);
         $torrentDocument->setVerified($torrent['verified']);
 
-        $dm->persist($torrentDocument);
-        $dm->flush();
+        $event = new FilterTorrentEvent($torrentDocument);
+        $this->getContainer()->get('event_dispatcher')->dispatch(CoreEvents::TORRENT_STORE, $event);
     }
 
     private function uploadTorrent(OutputInterface $output, array $torrent)
