@@ -1,6 +1,6 @@
 parameters:
   mxt_transmission.transmission.class: MXT\TransmissionBundle\Services\MXTTransmission
-  mxt_transmission.client.class: MXT\TransmissionBunle\Services\Client\MXTTransmissionClient
+  mxt_transmission.show.class: MXT\TransmissionBundle\Services\Process\TransmissionShow
 
 services:
   mxt_transmission.transmission:
@@ -8,3 +8,6 @@ services:
     arguments:
       host: %transmission_host%
       port: %transmission_port%
+
+  mxt_transmission.show:
+    class: %mxt_transmission.show.class%
