@@ -1,0 +1,16 @@
+info:
+ "Name": MXTorrent
+ "Hash": 1bdddad4858116655f74231711b9456e607436b1
+ "Created by": uTorrent/1860
+ "Created on": Wed Jan 21 00:47:03 2015
+ "Comment": MXTorrent
+ "Piece Count": 5
+ "Piece Size": 16.00 KiB
+ "Total Size": 68.07 kB
+ "Privacy": Public torrent
+
+files:
+ - MXTorrent/test.png
+ - MXTorrent/test.txt
+ - MXTorrent/test1.txt
+ - MXTorrent/test2.txt

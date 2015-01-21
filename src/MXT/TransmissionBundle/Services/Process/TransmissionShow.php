@@ -34,16 +34,30 @@ class TransmissionShow
      */
     private $process;
 
-    public function with($torrentPath)
+    public function setTorrentPath($torrentPath)
     {
         if (!file_exists($torrentPath)) {
             throw new \Exception(sprintf('Failed to open "%s" because file does not exist', $torrentPath));
         }
 
         $this->torrentPath = $torrentPath;
+        $this->run();
+    }
 
+    private function run()
+    {
         $this->process = new Process(sprintf('transmission-show %s', $this->torrentPath));
         $this->process->run();
+    }
+
+    public function getTorrentPath()
+    {
+        return $this->torrentPath;
+    }
+
+    public function with($torrentPath)
+    {
+        $this->setTorrentPath($torrentPath);
 
         return $this;
     }
@@ -59,41 +73,27 @@ class TransmissionShow
 
     private function getGeneralInfo($type)
     {
-        $match = [];
-        preg_match(sprintf('#%s: (.*)#m', $type), $this->process->getOutput(), $match);
-
-        if (empty($match[1])) {
-            return null;
-        }
-
-        return (string) $match[1];
-    }
-
-    public function getTracker()
-    {
-        $trackers = [];
-        preg_match_all('/udp:\/\/(.*)/m', $this->process->getOutput(), $trackers);
-
-        if (empty($trackers[1])) {
-            return [];
-        }
-
-        return $trackers;
+        return $this->match(sprintf('#%s:\s(.*)#m', $type), false);
     }
 
     public function getFiles()
     {
-        $compactFile = explode("FILES", $this->process->getOutput());
+        return $this->match('/[ \t]{2,}(.*)\s\((.*)[ \t]{1}([A-Za-z]{2})\)/m');
+    }
 
-        if (empty($compactFile[1])) {
-            return [];
+    private function match($expression, $matchAll = true)
+    {
+        $match = [];
+        
+        if ($matchAll) {
+            preg_match_all($expression, $this->process->getOutput(), $match);
+        }else {
+            preg_match($expression, $this->process->getOutput(), $match);
         }
 
-        return [];
-        /*
-         * Get file Info Pattern
-         * $files = explode("\n", trim($compactFile[1]));
-         * (.*) \(((.*) ([A-Za-z]{2}))\)
-         */
+        if (empty($match[1])) {
+            return [];
+        }
+        return $match[1];
     }
 }
