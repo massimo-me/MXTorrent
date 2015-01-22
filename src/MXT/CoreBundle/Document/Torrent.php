@@ -8,7 +8,9 @@
  */
 namespace MXT\CoreBundle\Document;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Documents\File;
 
 /**
  * @MongoDB\Document
@@ -36,11 +38,6 @@ class Torrent
     private $torrentLink;
 
     /**
-     * @MongoDB\Int
-     */
-    private $files;
-
-    /**
      * @MongoDB\String
      */
     private $hash;
@@ -54,6 +51,17 @@ class Torrent
      * @MongoDB\Boolean
      */
     private $verified;
+
+    /**
+     * @MongoDB\ReferenceMany(targetDocument="MXT\CoreBundle\Document\File", inversedBy="torrent", cascade={"persist"})
+     * @var null|ArrayCollection
+     */
+    private $files;
+
+    public function __construct()
+    {
+        $this->files = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -90,16 +98,6 @@ class Torrent
         $this->torrentLink = $torrentLink;
     }
 
-    public function getFiles()
-    {
-        return $this->files;
-    }
-
-    public function setFiles($files)
-    {
-        $this->files = $files;
-    }
-
     public function getHash()
     {
         return $this->hash;
@@ -128,6 +126,26 @@ class Torrent
     public function setVerified($verified)
     {
         $this->verified = (bool) $verified;
+    }
+
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    public function setFiles(ArrayCollection $files)
+    {
+        $this->files = $files;
+    }
+
+    public function addFile(File $file)
+    {
+        $this->files[] = $file;
+    }
+
+    public function removeFile(File $file)
+    {
+        $this->files->removeElement($file);
     }
 }
 

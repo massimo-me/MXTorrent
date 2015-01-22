@@ -17,6 +17,7 @@
  */
 namespace MXT\TransmissionBundle\Command;
 
+use R24\CoreBundle\Document\File;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,6 +36,24 @@ class DoneCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        echo($this->getContainer()->get('mxt_transmission.show')->with('/Users/Max/Downloads/test.torrent')->getInfo());
+        $dm = $this->getContainer()->get('doctrine_mongodb')->getManager();
+
+        $torrentPath = sprintf('%s/%s.torrent', getenv('TR_TORRENT_DIR'), getenv('TR_TORRENT_NAME'));
+        $torrentShow = $this->getContainer()->get('mxt_transmission.show')->with($torrentPath);
+
+        $torrent = $dm->getRepository('MXTCoreBundle:Torrent')->findOneBy([
+            'hash' => getenv('TR_TORRENT_HASH')
+        ]);
+
+        foreach($torrentShow->getFiles() as $torrentFile) {
+            $file = new File();
+            $file->setName($torrentFile);
+            $file->setSize(filesize(sprintf('%s/%s', getenv('TR_TORRENT_DIR'), $torrentFile)));
+
+            $torrent->addFile($file);
+        }
+
+        $dm->persist($torrent);
+        $dm->flush();
     }
 }

@@ -24,7 +24,7 @@ class TransmissionShowTest extends \PHPUnit_Framework_TestCase
     private $transmissionShow = null;
 
     /**
-     * @var null|array
+     * @var null|mixed
      */
     private $expected = null;
 
