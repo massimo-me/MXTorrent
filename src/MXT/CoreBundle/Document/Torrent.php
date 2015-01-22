@@ -83,6 +83,9 @@ class Torrent
         return $this->date;
     }
 
+    /**
+     * @param \DateTime $date
+     */
     public function setDate($date)
     {
         $this->date = $date;
