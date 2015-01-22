@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new MXT\CoreBundle\MXTCoreBundle(),
             new MXT\TransmissionBundle\MXTTransmissionBundle(),
+            new MXT\NotificationBundle\MXTNotificationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

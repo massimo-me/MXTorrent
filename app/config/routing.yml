@@ -1,3 +1,7 @@
+mxt_notification:
+    resource: "@MXTNotificationBundle/Resources/config/routing.yml"
+    prefix:   /
+
 mxt_transmission:
     resource: "@MXTTransmissionBundle/Resources/config/routing.yml"
     prefix:   /
