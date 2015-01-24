@@ -149,7 +149,6 @@ class KickAssCommand extends ContainerAwareCommand
 
         $torrentDocument->setTitle($torrent['title']);
         $torrentDocument->setDate(new \DateTime($torrent['pubDate']));
-        $torrentDocument->setFiles($torrent['files']);
         $torrentDocument->setHash($torrent['hash']);
         $torrentDocument->setSize($torrent['size']);
         $torrentDocument->setTorrentLink($torrent['torrentLink']);

@@ -135,7 +135,7 @@ class Torrent
         return $this->files;
     }
 
-    public function setFiles(ArrayCollection $files)
+    public function setFiles($files)
     {
         $this->files = $files;
     }

@@ -17,7 +17,8 @@
  */
 namespace MXT\TransmissionBundle\Command;
 
-use R24\CoreBundle\Document\File;
+use MXT\CoreBundle\Document\Torrent;
+use MXT\CoreBundle\Document\File;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,24 +37,34 @@ class DoneCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dm = $this->getContainer()->get('doctrine_mongodb')->getManager();
+        $this->dm = $this->getContainer()->get('doctrine_mongodb')->getManager();
 
-        $torrentPath = sprintf('%s/%s.torrent', getenv('TR_TORRENT_DIR'), getenv('TR_TORRENT_NAME'));
+        $torrentPath = sprintf('%s/%s.torrent', $this->getContainer()->get('mxt_core.torrent.folder'), getenv('TR_TORRENT_NAME'));
         $torrentShow = $this->getContainer()->get('mxt_transmission.show')->with($torrentPath);
 
-        $torrent = $dm->getRepository('MXTCoreBundle:Torrent')->findOneBy([
+        $torrent = $this->dm->getRepository('MXTCoreBundle:Torrent')->findOneBy([
             'hash' => getenv('TR_TORRENT_HASH')
         ]);
 
-        foreach($torrentShow->getFiles() as $torrentFile) {
-            $file = new File();
-            $file->setName($torrentFile);
-            $file->setSize(filesize(sprintf('%s/%s', getenv('TR_TORRENT_DIR'), $torrentFile)));
-
-            $torrent->addFile($file);
+        if (!$torrent) {
+            return ;
         }
 
-        $dm->persist($torrent);
-        $dm->flush();
+        $this->saveFiles($torrentShow->getFiles(), $torrent);
     }
+
+    private function saveFiles(array $files, Torrent $torrent)
+    {
+        foreach($files as $file) {
+            $torrentFile = new File();
+            $torrentFile->setName($file);
+            $torrentFile->setSize(filesize(sprintf('%s/%s', getenv('TR_TORRENT_DIR'), $file)));
+
+            $torrent->addFile($torrentFile);
+        }
+
+        $this->dm->persist($torrent);
+        $this->dm->flush();
+    }
+
 }
