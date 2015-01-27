@@ -38,12 +38,10 @@ class DoneCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->dm = $this->getContainer()->get('doctrine_mongodb')->getManager();
-
-        $torrentPath = sprintf('%s/%s.torrent', $this->getContainer()->get('mxt_core.torrent.folder'), getenv('TR_TORRENT_NAME'));
+        $torrentPath = sprintf('%s/%s.torrent', $this->getContainer()->getParameter('mxt_core.torrent.folder'), getenv('TR_TORRENT_NAME'));
         $torrentShow = $this->getContainer()->get('mxt_transmission.show')->with($torrentPath);
-
         $torrent = $this->dm->getRepository('MXTCoreBundle:Torrent')->findOneBy([
-            'hash' => getenv('TR_TORRENT_HASH')
+            'hash' => strtoupper(getenv('TR_TORRENT_HASH'))
         ]);
 
         if (!$torrent) {
@@ -66,5 +64,4 @@ class DoneCommand extends ContainerAwareCommand
         $this->dm->persist($torrent);
         $this->dm->flush();
     }
-
 }

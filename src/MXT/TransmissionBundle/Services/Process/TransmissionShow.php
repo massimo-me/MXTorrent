@@ -46,7 +46,7 @@ class TransmissionShow
 
     private function run()
     {
-        $this->process = new Process(sprintf('transmission-show %s', $this->torrentPath));
+        $this->process = new Process(sprintf('transmission-show "%s"', $this->torrentPath));
         $this->process->run();
     }
 

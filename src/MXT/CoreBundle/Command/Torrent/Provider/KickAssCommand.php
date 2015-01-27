@@ -172,6 +172,8 @@ class KickAssCommand extends ContainerAwareCommand
 
         try {
             $this->transmissionUpload($torrentFile);
+            $this->saveResult($torrent);
+
             $output->writeln(sprintf('Torrent <info>%s</info> was uploaded', $torrent['title']));
         } catch (\Exception $e) {
             $output->writeln(sprintf('Transmission error: <error>%s</error>', $e->getMessage()));

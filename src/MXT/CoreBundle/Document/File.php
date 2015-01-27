@@ -5,7 +5,7 @@ namespace MXT\CoreBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * @MongoDB\Document(collection="FIle")
+ * @MongoDB\Document(collection="File")
  * @MongoDB\HasLifecycleCallbacks
  */
 class File
