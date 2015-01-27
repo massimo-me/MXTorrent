@@ -18,5 +18,6 @@ class MXTNotificationExtension extends MXTBaseExtension
 
         $this->loadConfiguration($container, (__DIR__));
         $this->loader->load('services.yml');
+        $this->loader->load('subscriber.yml');
     }
 }

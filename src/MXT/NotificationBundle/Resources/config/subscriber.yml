@@ -1,0 +1,6 @@
+services:
+    mxt_notification.subscriber.notification_subscriber:
+        class: MXT\NotificationBundle\Subscriber\NotificationSubscriber
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_subscriber }

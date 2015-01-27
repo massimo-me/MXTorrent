@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "68ef3a455a7342b15327f25fd6cf967a",
+    "hash": "f8530a71cd9c0ab1ddaadd10c55e082c",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1712,6 +1712,53 @@
             "time": "2014-07-19 10:52:35"
         },
         {
+            "name": "sly/pushover",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Ph3nol/PushOver.git",
+                "reference": "0a366c7d397496450a0aeb710be381481a63e575"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Ph3nol/PushOver/zipball/0a366c7d397496450a0aeb710be381481a63e575",
+                "reference": "0a366c7d397496450a0aeb710be381481a63e575",
+                "shasum": ""
+            },
+            "require": {
+                "kriswallsmith/buzz": ">= 0.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Sly": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cédric Dugat",
+                    "email": "ph3@slynett.com"
+                }
+            ],
+            "description": "A PHP library for easy PushOver service use: send real-time notifications to your Android and iOS devices.",
+            "homepage": "https://github.com/Ph3nol/PushOver",
+            "keywords": [
+                "android",
+                "iphone",
+                "notification",
+                "push",
+                "pushover",
+                "service"
+            ],
+            "time": "2013-07-24 20:25:51"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v5.3.1",
             "source": {
@@ -2973,6 +3020,7 @@
         "doctrine/mongodb-odm-bundle": 20
     },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.3.3"
     },

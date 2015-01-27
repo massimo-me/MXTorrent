@@ -1,1 +1,10 @@
+parameters:
+    mxt_notification.push.pushover.enabled: true
+    mxt_notification.push.pushover.class: MXT\NotificationBundle\Services\Push\PushOver
+
 services:
+    mxt_notification.push.pushover:
+       class: %mxt_notification.push.pushover.class%
+       arguments:
+          userKey: %mxt_notification.push.pushover.userKey%
+          apiKey: %mxt_notification.push.pushover.apiKey%
