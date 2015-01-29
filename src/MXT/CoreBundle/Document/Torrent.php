@@ -149,5 +149,10 @@ class Torrent
     {
         $this->files->removeElement($file);
     }
+
+    public function hasFiles()
+    {
+        return $this->files->count() > 0;
+    }
 }
 

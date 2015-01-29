@@ -63,6 +63,7 @@ class DoneCommand extends ContainerAwareCommand
         foreach($files as $file) {
             $torrentFile = new File();
             $torrentFile->setName($file);
+            $torrentFile->setTorrent($this->torrent);
             $torrentFile->setSize(filesize(sprintf('%s/%s', getenv('TR_TORRENT_DIR'), $file)));
 
             $this->torrent->addFile($torrentFile);

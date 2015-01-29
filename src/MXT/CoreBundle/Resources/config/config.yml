@@ -1,0 +1,6 @@
+parameters:
+  mxt_core.movie_type:
+    mov: true
+    mkv: true
+    flv: true
+    avi: false

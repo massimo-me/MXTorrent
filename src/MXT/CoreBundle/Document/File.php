@@ -30,6 +30,11 @@ class File
      */
     private $torrent;
 
+    /**
+     * @MongoDB\Boolean
+     */
+    private $movie = false;
+
     public function getId()
     {
         return $this->id;
@@ -64,4 +69,21 @@ class File
     {
         $this->torrent = $torrent;
     }
+
+    /**
+     * @return bool
+     */
+    public function isMovie()
+    {
+        return $this->movie;
+    }
+
+    /**
+     * @param bool $movie
+     */
+    public function setMovie($movie)
+    {
+        $this->movie = $movie;
+    }
+
 }
