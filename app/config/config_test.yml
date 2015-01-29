@@ -3,6 +3,13 @@ imports:
 
 parameters:
     mxt_core.torrent.client.kickAss.class: MXT\CoreBundle\Test\Services\Client\Torrent\KickAss
+    mxt_core.torrent.folder: "%kernel.root_dir%/../src/MXT/TransmissionBundle/Test/Files"
+
+services:
+    mxt_notification.subscriber.notification_subscriber:
+        class: MXT\NotificationBundle\Test\Stub\NotificationSubscriber
+        tags:
+            - { name: kernel.event_subscriber }
 
 liip_functional_test: ~
 

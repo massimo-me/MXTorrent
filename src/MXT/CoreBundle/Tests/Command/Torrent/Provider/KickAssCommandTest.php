@@ -19,6 +19,8 @@ class KickAssCommandTest extends MXTWebTestCase
 
     public function setUp()
     {
+        parent::setUp();
+        
         $this->application = new Application($this->getContainer()->get('kernel'));
     }
 
