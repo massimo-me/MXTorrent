@@ -6,8 +6,8 @@ parameters:
         - field #(Order)
         - page #(Page)
     kickass.timeout:
-      response: 5
-      connection: 5
+      response: 10
+      connection: 10
     kickass.search.fields:
       size: size
       files : files_count

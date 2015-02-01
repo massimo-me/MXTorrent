@@ -38,12 +38,12 @@ class KickAssCommandTest extends MXTWebTestCase
             '-m'          => true
         ];
         $commandTester->execute($commandOptions);
-        $this->assertContains('Title: The Trip to Italy', $commandTester->getDisplay());
+        $this->assertContains('Title: Ubuntu 14.10 Desktop 64bit ISO', $commandTester->getDisplay());
 
         $dm = $this->getContainer()->get('doctrine_mongodb')->getManager();
-        $this->assertCount(25, $dm->getRepository('MXTCoreBundle:Torrent')->findAll());
+        $this->assertCount(14, $dm->getRepository('MXTCoreBundle:Torrent')->findAll());
 
         $commandTester->execute($commandOptions);
-        $this->assertCount(25, $dm->getRepository('MXTCoreBundle:Torrent')->findAll());
+        $this->assertCount(14, $dm->getRepository('MXTCoreBundle:Torrent')->findAll());
     }
 }

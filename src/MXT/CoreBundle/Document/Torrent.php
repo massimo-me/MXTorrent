@@ -27,6 +27,11 @@ class Torrent
     private $title;
 
     /**
+     * @MongoDB\String
+     */
+    private $fullTitle;
+
+    /**
      * @MongoDB\Date
      */
     private $date;
@@ -57,6 +62,13 @@ class Torrent
      */
     private $files;
 
+    /**
+     * @MongoDB\String
+     */
+    private $image = null;
+
+    private $link;
+
     public function __construct()
     {
         $this->files = new ArrayCollection();
@@ -75,6 +87,16 @@ class Torrent
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    public function getFullTitle()
+    {
+        return $this->fullTitle;
+    }
+
+    public function setFullTitle($fullTitle)
+    {
+        $this->fullTitle = $fullTitle;
     }
 
     public function getDate()
@@ -153,6 +175,26 @@ class Torrent
     public function hasFiles()
     {
         return $this->files->count() > 0;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    public function setLink($link)
+    {
+        $this->link = $link;
     }
 }
 

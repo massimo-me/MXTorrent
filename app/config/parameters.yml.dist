@@ -16,3 +16,6 @@ parameters:
     locale:            en
 
     secret:            AppSecret
+
+    mxt_notification.push.pushover.userKey: null
+    mxt_notification.push.pushover.apiKey: null

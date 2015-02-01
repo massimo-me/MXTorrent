@@ -8,6 +8,7 @@
  */
 namespace MXT\CoreBundle\Command\Torrent\Provider;
 
+use Goutte\Client;
 use MXT\CoreBundle\Document\Torrent;
 use MXT\CoreBundle\Event\FilterTorrentEvent;
 use MXT\CoreBundle\CoreEvents;
@@ -153,6 +154,12 @@ class KickAssCommand extends ContainerAwareCommand
         $torrentDocument->setSize($torrent['size']);
         $torrentDocument->setTorrentLink($torrent['torrentLink']);
         $torrentDocument->setVerified($torrent['verified']);
+        $torrentDocument->setLink($torrent['link']);
+
+        if ($grab = $this->grab($torrent['link'])) {
+            $torrentDocument->setFullTitle($grab['title']);
+            $torrentDocument->setImage($grab['image']);
+        }
 
         $event = new FilterTorrentEvent($torrentDocument);
         $this->getContainer()->get('event_dispatcher')->dispatch(CoreEvents::TORRENT_STORE, $event);
@@ -205,5 +212,22 @@ class KickAssCommand extends ContainerAwareCommand
                 return (bool) preg_match('/^(?:yes)/i', $response);
             }
         );
+    }
+
+    private function grab($link)
+    {
+        $client = new Client();
+
+        $info = [];
+
+        try {
+            $crawler = $client->request('GET', $link);
+            $info['image'] = $crawler->filter('.movieCover img')->attr('src');
+            $info['title'] = $crawler->filter('.dataList ul li a span')->text()
+;        } catch(\Exception $e) {
+            return $info;
+        }
+
+        return $info;
     }
 }

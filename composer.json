@@ -20,9 +20,9 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/mongodb-odm": "1.0.*@dev",
         "doctrine/mongodb-odm-bundle": "3.0.*@dev",
-        "guzzlehttp/guzzle": "5.0.*",
         "kleiram/transmission-php": "~1.0",
-        "sly/pushover": "~1.0"
+        "sly/pushover": "~1.0",
+        "fabpot/goutte": "~2.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
