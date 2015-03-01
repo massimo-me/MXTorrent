@@ -1,6 +1,6 @@
 parameters:
     kickass.api:
-      url: https://kickass.so/json.php
+      url: http://katproxy.com/json.php
       filters:
         - q #(Key)
         - field #(Order)
