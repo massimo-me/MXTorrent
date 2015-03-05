@@ -1,13 +1,13 @@
 .idea/
 /web/bundles/
+/web/css/
+/web/js/
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters.yml
 /app/logs/*
-/app/datas/Torrent*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
-!app/datas/Torrent.gitkeep
 /app/phpunit.xml
 /build/
 /vendor/

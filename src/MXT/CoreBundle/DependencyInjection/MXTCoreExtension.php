@@ -19,6 +19,7 @@ class MXTCoreExtension extends MXTBaseExtension
         $this->loadConfiguration($container, (__DIR__));
         $this->loader->load('services.yml');
         $this->loader->load('subscriber.yml');
+        $this->loader->load('twig.yml');
         $this->loader->load('config.yml');
         $this->loader->load('Torrent/Providers/kickass.yml');
     }

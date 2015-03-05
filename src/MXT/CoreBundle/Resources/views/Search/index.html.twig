@@ -1,0 +1,118 @@
+{% extends('::base.html.twig') %}
+
+{% block container %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="jumbotron">
+                <h1 class="text-center">KickassTorrents</h1>
+                <h5 class="text-center">Powered by <a href="http://kickass.to/">http://kickass.to/</a></h5>
+                <form method="get">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label>Search query</label>
+                                {{ form_widget(form.query, {'attr' : {'placeholder' : 'Search...'}}) }}
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Search filter</label>
+                                {{ form_widget(form.filter) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-block btn-success btn-lg" value="Search">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% if torrents is defined %}
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Verified</th>
+                <th>Date</th>
+                <th>Seeds</th>
+                <th>Leechs</th>
+                <th>Size</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for torrent in torrents  %}
+            <tr>
+                <th scope="row">
+                    <a target="_blank" href="{{ torrent.link }}">
+                        {{ torrent.title|length > 50 ? torrent.title|slice(0, 50) ~ '...' : torrent.title  }}
+                    </a>
+                    <span class="badge">{{ torrent.files }}</span>
+                </th>
+                <td>
+                    {% if torrent.verified %}
+                        <span class="label label-success">yes</span>
+                    {% else %}
+                        <span class="label label-danger">no</span>
+                    {% endif %}
+                </td>
+                <td>{{ torrent.pubDate |date("d/m/Y H:m") }}</td>
+                <td>{{ torrent.seeds }}</td>
+                <td>{{ torrent.leechs }}</td>
+                <td>{{ torrent.size |humanBytes}}</td>
+                <td>
+                    <a href="#" class="btn btn-primary btn-sm">
+                        Save
+                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                    </a>
+                    <a href="#" class="btn btn-success btn-sm">
+                        Upload
+                        <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <nav>
+        <ul class="pagination">
+            {% set page = (form.vars.value.page) ? form.vars.value.page : 1 %}
+            {% if page > 1 %}
+            <li>
+                <a href="{{
+                    app.request.pathInfo ~ '?search[query]=' ~ form.vars.value.query ~
+                    '&search[filter]=' ~ form.vars.value.filter ~
+                    '&search[page]=' ~ (page - 1) | url_encode
+                }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+
+            <li class="active"><a href="#">{{ page }}</a></li>
+
+            <li>
+                <a href="{{
+                app.request.pathInfo ~ '?search[query]=' ~ form.vars.value.query ~
+                '&search[filter]=' ~ form.vars.value.filter ~
+                '&search[page]=' ~ (page + 1) | url_encode
+                }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endif %}
+
+{% endblock %}

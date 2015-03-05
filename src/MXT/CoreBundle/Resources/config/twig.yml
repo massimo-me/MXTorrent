@@ -1,0 +1,5 @@
+services:
+  mxt_core.twig.bytes_extension:
+        class: MXT\CoreBundle\Twig\BytesExtension
+        tags:
+            - { name: twig.extension }

@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}MXTorrent{% endblock %}</title>
+
+    {%- block stylesheets -%}
+            {% stylesheets
+              '../app/Resources/public/css/bootstrap.min.css'
+              '../app/Resources/public/css/style.css'
+              '../app/Resources/public/css/select2css'
+            %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+            {%- endstylesheets -%}
+    {% endblock %}
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('home') }}">MXTorrent</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Providers <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ path('kickass_search') }}">Kickass</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    {% block container %}
+    {% endblock %}
+</div>
+
+{% block footer_js %}
+    {% javascripts
+        '../app/Resources/public/js/jquery.min.js'
+        '../app/Resources/public/js/bootstrap.min.js'
+        '../app/Resources/public/js/select2.min.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {%- endjavascripts -%}
+{% endblock %}
+
+</body>
+</html>
