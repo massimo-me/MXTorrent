@@ -17,16 +17,15 @@ use Symfony\Component\HttpFoundation\Request;
 class SearchController extends Controller
 {
     /**
-     * @Route("/kickass/search", name="kickass_search")
+     * @Route("/", name="home")
      * @Template("MXTCoreBundle:Search:index.html.twig")
      *
      * @return array
      */
-    public function kickAssAction(Request $request)
+    public function homeAction(Request $request)
     {
         $form = $this->createForm(new SearchType(), null, [
-            'filters' => $this->container->getParameter('kickass.search.fields'),
-            'page' => 1
+            'filters' => $this->container->getParameter('kickass.search.fields')
         ]);
 
         $form->handleRequest($request);

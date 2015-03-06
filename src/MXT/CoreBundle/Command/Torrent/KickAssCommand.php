@@ -6,7 +6,7 @@
  * MXT\CoreBundle\Command\Torrent\Provide\KickAssCommand
  *
  */
-namespace MXT\CoreBundle\Command\Torrent\Provider;
+namespace MXT\CoreBundle\Command\Torrent;
 
 use Goutte\Client;
 use MXT\CoreBundle\Document\Torrent;

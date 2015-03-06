@@ -6,9 +6,9 @@
  * MXT\CoreBundle\Tests\Command\Torrent\KickAssCommandTest.php
  *
  */
-namespace MXT\CoreBundle\Tests\Command\Torrent\Provider;
+namespace MXT\CoreBundle\Tests\Command\Torrent;
 
-use MXT\CoreBundle\Command\Torrent\Provider\KickAssCommand;
+use MXT\CoreBundle\Command\Torrent\KickAssCommand;
 use MXT\CoreBundle\Test\MXTWebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;

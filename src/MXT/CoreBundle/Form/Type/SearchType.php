@@ -28,7 +28,7 @@ class SearchType extends AbstractType
                 'choices'  => $options['filters'],
             ])
             ->add('page', 'hidden', [
-                'data' => $options['page']
+                'data' => '1'
             ])
             ->setMethod('GET')
         ;

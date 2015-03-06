@@ -1,7 +1,3 @@
-mxt_home:
-    resource: "@MXTCoreBundle/Controller/HomeController.php"
-    type:     annotation
-
 mxt_search:
     resource: "@MXTCoreBundle/Controller/SearchController.php"
     type:     annotation
