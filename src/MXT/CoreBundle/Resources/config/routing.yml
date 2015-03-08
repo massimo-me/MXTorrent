@@ -1,3 +1,6 @@
 mxt_search:
     resource: "@MXTCoreBundle/Controller/SearchController.php"
     type:     annotation
+mxt_torrent:
+    resource: "@MXTCoreBundle/Controller/TorrentController.php"
+    type:     annotation

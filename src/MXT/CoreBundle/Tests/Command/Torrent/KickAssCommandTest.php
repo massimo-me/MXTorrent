@@ -34,7 +34,7 @@ class KickAssCommandTest extends MXTWebTestCase
         $commandOptions = [
             'command'     => $command->getName(),
             'searchQuery' => 'test',
-            'order'       => 'age',
+            'order'       => 'time_add',
             '-m'          => true
         ];
         $commandTester->execute($commandOptions);

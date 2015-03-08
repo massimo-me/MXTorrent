@@ -9,8 +9,8 @@ parameters:
       response: 10
       connection: 10
     kickass.search.fields:
-      size: size
-      files : files_count
-      age   : time_add
-      seed  : seeders
-      leech : leecher
+      time_add: Age
+      size: Size
+      files_count: Files Count
+      seeders: Seeders
+      leechers: Leechers

@@ -40,6 +40,8 @@ class SearchController extends Controller
                 $form->get('page')->getData()
             ]);
 
+            $this->saveResult($torrentList);
+
             return [
                 'form'     => $form->createView(),
                 'torrents' => $torrentList
@@ -49,5 +51,14 @@ class SearchController extends Controller
         return [
             'form'      => $form->createView()
         ];
+    }
+
+    private function saveResult(array $torrents)
+    {
+        $torrentService = $this->container->get('mxt_core.torrent_utils');
+
+        foreach($torrents as $torrent) {
+            $torrentService->create($torrent);
+        }
     }
 }

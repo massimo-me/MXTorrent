@@ -20,6 +20,7 @@ class TorrentSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
+        #@WIP refactor eventi
         return [
             CoreEvents::TORRENT_STORE => 'onTorrentStore',
             TransmissionEvent::TORRENT_DOWNLOAD_COMPLETED => 'onTorrentDownloadCompleted'

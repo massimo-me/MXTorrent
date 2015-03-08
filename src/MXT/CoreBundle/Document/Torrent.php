@@ -67,7 +67,15 @@ class Torrent
      */
     private $image = null;
 
+    /**
+     * @MongoDB\String
+     */
     private $link;
+
+    /**
+     * @MongoDB\Boolean
+     */
+    private $saved = false;
 
     public function __construct()
     {
@@ -195,6 +203,16 @@ class Torrent
     public function setLink($link)
     {
         $this->link = $link;
+    }
+
+    public function setSaved($saved)
+    {
+        $this->saved = $saved;
+    }
+
+    public function isSaved()
+    {
+        return $this->saved;
     }
 }
 

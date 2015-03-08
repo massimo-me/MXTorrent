@@ -20,6 +20,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class KickAssCommand extends ContainerAwareCommand
 {
+    /*
+     * @var TorrentUtils
+     */
+    private $torrentUtils;
+
     protected function configure()
     {
         $this->setName('mxt:torrent:kickass')
@@ -62,6 +67,8 @@ class KickAssCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->torrentUtils = $this->getContainer()->get('mxt_core.torrent_utils');
+
         $searchQuery = $input->getArgument('searchQuery');
         $order = $input->getArgument('order');
         $page = $input->getOption('page');
@@ -134,54 +141,28 @@ class KickAssCommand extends ContainerAwareCommand
         );
     }
 
-    private function saveResult(array $torrent)
+    private function saveResult(array $torrentInfo)
     {
-        $dm = $this->getContainer()->get('doctrine_mongodb')->getManager();
-
-        $checkTorrent = $dm->getRepository('MXTCoreBundle:Torrent')->findOneBy([
-            'hash' => $torrent['hash']
-        ]);
-
-        if ($checkTorrent) {
-            return ;
-        }
-
-        $torrentDocument = new Torrent();
-
-        $torrentDocument->setTitle($torrent['title']);
-        $torrentDocument->setDate(new \DateTime($torrent['pubDate']));
-        $torrentDocument->setHash($torrent['hash']);
-        $torrentDocument->setSize($torrent['size']);
-        $torrentDocument->setTorrentLink($torrent['torrentLink']);
-        $torrentDocument->setVerified($torrent['verified']);
-        $torrentDocument->setLink($torrent['link']);
-
-        if ($grab = $this->grab($torrent['link'])) {
-            $torrentDocument->setFullTitle($grab['title']);
-            $torrentDocument->setImage($grab['image']);
-        }
-
-        $event = new FilterTorrentEvent($torrentDocument);
-        $this->getContainer()->get('event_dispatcher')->dispatch(CoreEvents::TORRENT_STORE, $event);
+        $torrent = $this->torrentUtils->create($torrentInfo);
+        $this->torrentUtils->grabInfo($torrent);
     }
 
-    private function uploadTorrent(OutputInterface $output, array $torrent)
+    private function uploadTorrent(OutputInterface $output, array $torrentInfo)
     {
         $result = $this->askToUploadTorrent($output);
 
         if (!$result) {
-            $output->writeln(sprintf('Torrent <question>%s</question> not uploaded on Transmission Server', $torrent['title']));
+            $output->writeln(sprintf('Torrent <question>%s</question> not uploaded on Transmission Server', $torrentInfo['title']));
             $output->writeln('');
             return ;
         }
 
-        $torrentFile = $this->downloadResult($torrent)->getPath();
+        $torrentFile = $this->downloadResult($torrentInfo)->getPath();
 
         try {
             $this->transmissionUpload($torrentFile);
-            $this->saveResult($torrent);
 
-            $output->writeln(sprintf('Torrent <info>%s</info> was uploaded', $torrent['title']));
+            $output->writeln(sprintf('Torrent <info>%s</info> was uploaded', $torrentInfo['title']));
         } catch (\Exception $e) {
             $output->writeln(sprintf('Transmission error: <error>%s</error>', $e->getMessage()));
         }

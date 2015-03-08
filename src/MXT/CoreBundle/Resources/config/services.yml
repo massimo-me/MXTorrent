@@ -3,6 +3,7 @@ parameters:
     mxt_core.httpclient.class: MXT\CoreBundle\Services\MXTClient
     mxt_core.download.torCache.class: MXT\CoreBundle\Services\Download\TorCache
     mxt_core.torrent.client.kickAss.class: MXT\CoreBundle\Services\Client\Torrent\KickAss
+    mxt_core.torrent.class: MXT\CoreBundle\Services\TorrentUtils
 
 services:
     mxt_core.httpclient:
@@ -17,3 +18,6 @@ services:
         arguments:
               container: @service_container
               client: @mxt_core.httpclient
+    mxt_core.torrent_utils:
+        class: %mxt_core.torrent.class%
+        arguments: ["@doctrine_mongodb.odm.document_manager", "@event_dispatcher"]
