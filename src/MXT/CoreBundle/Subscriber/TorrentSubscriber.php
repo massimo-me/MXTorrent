@@ -20,14 +20,13 @@ class TorrentSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        #@WIP refactor eventi
         return [
-            CoreEvents::TORRENT_STORE => 'onTorrentStore',
+            CoreEvents::TORRENT_INITIALIZE => 'onTorrentInitialize',
             TransmissionEvent::TORRENT_DOWNLOAD_COMPLETED => 'onTorrentDownloadCompleted'
         ];
     }
 
-    public function onTorrentStore(FilterTorrentEvent $event)
+    public function onTorrentInitialize(FilterTorrentEvent $event)
     {
         return $this->saveTorrent($event, CoreEvents::TORRENT_CREATED);
     }

@@ -30,27 +30,24 @@ class SearchController extends Controller
 
         $form->handleRequest($request);
 
+        $formView = $form->createView();
+
         if ($form->isValid())
         {
             $kickAssClient = $this->container->get('mxt_core.torrent.client.kickAss');
 
-            $torrentList = $kickAssClient->request([
+            $torrents = $kickAssClient->request([
                 $form->get('query')->getData(),
                 $form->get('filter')->getData(),
                 $form->get('page')->getData()
             ]);
 
-            $this->saveResult($torrentList);
+            $this->saveResult($torrents);
 
-            return [
-                'form'     => $form->createView(),
-                'torrents' => $torrentList
-            ];
+            return compact('formView', 'torrents');
         }
 
-        return [
-            'form'      => $form->createView()
-        ];
+        return compact('formView');
     }
 
     private function saveResult(array $torrents)

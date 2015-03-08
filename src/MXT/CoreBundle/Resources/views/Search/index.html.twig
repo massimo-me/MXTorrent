@@ -9,21 +9,21 @@
                 <form method="get">
                     <div class="row">
                         <div class="col-lg-8">
-                            <div class="form-group">
+                            <div class="formView-group">
                                 <label>Search query</label>
-                                {{ form_widget(form.query, {'attr' : {'placeholder' : 'Search...'}}) }}
+                                {{ form_widget(formView.query, {'attr' : {'placeholder' : 'Search...'}}) }}
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div class="form-group">
+                            <div class="formView-group">
                                 <label>Search filter</label>
-                                {{ form_widget(form.filter) }}
+                                {{ form_widget(formView.filter) }}
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="form-group">
+                            <div class="formView-group">
                                 <input type="submit" class="btn btn-block btn-success btn-lg" value="Search">
                             </div>
                         </div>
@@ -87,12 +87,12 @@
 
     <nav>
         <ul class="pagination">
-            {% set page = (form.vars.value.page) ? form.vars.value.page : 1 %}
+            {% set page = (formView.vars.value.page) ? formView.vars.value.page : 1 %}
             {% if page > 1 %}
             <li>
                 <a href="{{
-                    app.request.pathInfo ~ '?search[query]=' ~ form.vars.value.query ~
-                    '&search[filter]=' ~ form.vars.value.filter ~
+                    app.request.pathInfo ~ '?search[query]=' ~ formView.vars.value.query ~
+                    '&search[filter]=' ~ formView.vars.value.filter ~
                     '&search[page]=' ~ (page - 1) | url_encode
                 }}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
@@ -104,8 +104,8 @@
 
             <li>
                 <a href="{{
-                app.request.pathInfo ~ '?search[query]=' ~ form.vars.value.query ~
-                '&search[filter]=' ~ form.vars.value.filter ~
+                app.request.pathInfo ~ '?search[query]=' ~ formView.vars.value.query ~
+                '&search[filter]=' ~ formView.vars.value.filter ~
                 '&search[page]=' ~ (page + 1) | url_encode
                 }}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>

@@ -10,7 +10,7 @@ namespace MXT\CoreBundle;
 
 final class CoreEvents
 {
-    const TORRENT_STORE   = 'mxt_core.torrent.store';
+    const TORRENT_INITIALIZE   = 'mxt_core.torrent.initialize';
     const TORRENT_CREATED = 'mxt_core.torrent.created';
     const TORRENT_UPDATED = 'mxt_core.torrent.updated';
 }

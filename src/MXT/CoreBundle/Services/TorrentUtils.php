@@ -55,7 +55,7 @@ class TorrentUtils
         $torrent->setLink($torrentInfo['link']);
 
         $this->dispatcher->dispatch(
-            CoreEvents::TORRENT_STORE,
+            CoreEvents::TORRENT_INITIALIZE,
             new FilterTorrentEvent($torrent)
         );
 
