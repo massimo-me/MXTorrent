@@ -50,12 +50,14 @@ class SearchController extends Controller
         return compact('formView');
     }
 
-    private function saveResult(array $torrents)
+    private function saveResult(array &$torrents)
     {
         $torrentService = $this->container->get('mxt_core.torrent_utils');
 
-        foreach($torrents as $torrent) {
-            $torrentService->create($torrent);
+        foreach($torrents as &$torrent) {
+            $torrent['document'] = $torrentService->create($torrent);
         }
+
+        return $torrents;
     }
 }

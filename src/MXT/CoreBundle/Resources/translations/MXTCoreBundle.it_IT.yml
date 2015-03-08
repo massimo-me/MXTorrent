@@ -1,0 +1,4 @@
+torrent:
+  saved:
+    success: Il torrent è stato salvato con successo.
+    error: Impossibile completareo il download del torrent.

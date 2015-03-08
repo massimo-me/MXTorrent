@@ -39,7 +39,7 @@ class Torrent
     /**
      * @MongoDB\String
      */
-    private $torrentLink;
+    private $downloadLink;
 
     /**
      * @MongoDB\String
@@ -120,14 +120,14 @@ class Torrent
         $this->date = $date;
     }
 
-    public function getTorrentLink()
+    public function getDownloadLink()
     {
-        return $this->torrentLink;
+        return $this->downloadLink;
     }
 
-    public function setTorrentLink($torrentLink)
+    public function setDownloadLink($downloadLink)
     {
-        $this->torrentLink = $torrentLink;
+        $this->downloadLink = $downloadLink;
     }
 
     public function getHash()

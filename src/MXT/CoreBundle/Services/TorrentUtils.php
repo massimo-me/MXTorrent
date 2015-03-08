@@ -11,6 +11,7 @@ namespace MXT\CoreBundle\Services;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use MXT\CoreBundle\CoreEvents;
+use MXT\CoreBundle\Document\File;
 use MXT\CoreBundle\Document\Torrent;
 use Goutte\Client;
 use MXT\CoreBundle\Event\FilterTorrentEvent;
@@ -50,7 +51,7 @@ class TorrentUtils
         $torrent->setDate(new \DateTime($torrentInfo['pubDate']));
         $torrent->setHash($torrentInfo['hash']);
         $torrent->setSize($torrentInfo['size']);
-        $torrent->setTorrentLink($torrentInfo['torrentLink']);
+        $torrent->setDownloadLink($torrentInfo['torrentLink']);
         $torrent->setVerified($torrentInfo['verified']);
         $torrent->setLink($torrentInfo['link']);
 
@@ -72,6 +73,24 @@ class TorrentUtils
             $torrent->setFullTitle($crawler->filter('.dataList ul li a span')->text());
         } catch(\Exception $e) {
             return $torrent;
+        }
+
+        $this->dispatcher->dispatch(
+            CoreEvents::TORRENT_UPDATED,
+            new FilterTorrentEvent($torrent)
+        );
+
+        return $torrent;
+    }
+
+    public function saveFiles(array $files, Torrent $torrent)
+    {
+        foreach($files as $file) {
+            $torrentFile = new File();
+            $torrentFile->setName($file);
+            $torrentFile->setTorrent($torrent);
+
+            $torrent->addFile($torrentFile);
         }
 
         $this->dispatcher->dispatch(

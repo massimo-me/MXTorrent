@@ -22,6 +22,7 @@ class TorrentSubscriber implements EventSubscriberInterface
     {
         return [
             CoreEvents::TORRENT_INITIALIZE => 'onTorrentInitialize',
+            CoreEvents::TORRENT_UPDATED => 'onTorrentUpdated',
             TransmissionEvent::TORRENT_DOWNLOAD_COMPLETED => 'onTorrentDownloadCompleted'
         ];
     }
@@ -36,16 +37,24 @@ class TorrentSubscriber implements EventSubscriberInterface
         return $this->saveTorrent($event, CoreEvents::TORRENT_UPDATED);
     }
 
-    private function saveTorrent(FilterTorrentEvent $event, $eventName)
+    public function onTorrentUpdated(FilterTorrentEvent $event)
+    {
+        return $this->saveTorrent($event);
+    }
+
+    private function saveTorrent(FilterTorrentEvent $event, $eventName = null)
     {
         $dm = $this->container->get('doctrine_mongodb')->getManager();
         $dm->persist($event->getTorrent());
         $dm->flush();
 
+        if (!$eventName) return $event;
+
         $this->container->get('event_dispatcher')->dispatch(
             $eventName,
             new FilterTorrentEvent($event->getTorrent())
         );
+
         return $event;
     }
 
