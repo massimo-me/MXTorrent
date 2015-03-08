@@ -158,7 +158,7 @@ class KickAssCommand extends ContainerAwareCommand
         }
 
         $this->saveResult($torrentInfo);
-        
+
         $torrentFile = $this->downloadResult($torrentInfo)->getPath();
 
         try {
